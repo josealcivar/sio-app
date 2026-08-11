@@ -37,7 +37,7 @@ export const clientes: Cliente[] = [
 ]
 
 export const citasManana: Cita[] = [
-  { id: "m1", nombre: "Valeria Velez",fecha: hoyISO(), hora: "10:00", servicio: "Limpieza facial profunda" },
+  { id: "m1", nombre: "Carolina Veloz",fecha: hoyISO(), hora: "10:00", servicio: "Limpieza facial profunda" },
   { id: "m2", nombre: "Carla Mendoza", fecha: hoyISO(), hora: "12:00", servicio: "Limpieza + hidratación" },
   { id: "m3", nombre: "Renata Díaz",fecha: hoyISO(),  hora: "17:00", servicio: "Limpieza facial profunda" },
 ]
