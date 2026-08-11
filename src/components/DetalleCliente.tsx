@@ -16,7 +16,6 @@ export default function DetalleCliente({ cliente, onClose, onGuardar }: Props) {
   const [obs, setObs] = useState("")
   const [tel, setTel] = useState("")
 
-  // sincroniza al abrir otro cliente y sale del modo edición
   useEffect(() => {
     setObs(cliente?.observaciones ?? "")
     setTel(cliente?.telefono ?? "")
@@ -42,7 +41,7 @@ export default function DetalleCliente({ cliente, onClose, onGuardar }: Props) {
           <div className="w-12 h-12 rounded-full bg-secondary text-primary grid place-items-center font-serif text-lg font-semibold shrink-0">
             {cliente.nombre.charAt(0).toUpperCase()}
           </div>
-          <div className="min-w-0 flex-1">
+          <div className="min-w-0">
             <DialogTitle className="font-serif text-xl">{cliente.nombre}</DialogTitle>
             {dormido ? (
               <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-honey-soft text-honey">
@@ -54,15 +53,6 @@ export default function DetalleCliente({ cliente, onClose, onGuardar }: Props) {
               </span>
             )}
           </div>
-          {!editando && (
-            <button
-              onClick={() => setEditando(true)}
-              className="text-muted-foreground hover:text-primary p-1"
-              aria-label="Editar"
-            >
-              <Pencil size={18} />
-            </button>
-          )}
         </div>
 
         {/* datos en dos columnas */}
@@ -126,14 +116,24 @@ export default function DetalleCliente({ cliente, onClose, onGuardar }: Props) {
             </button>
           </div>
         ) : (
-          <a
-            href={linkWhatsApp(cliente.telefono, `Hola ${cliente.nombre} 💆`)}
-            target="_blank"
-            rel="noopener"
-            className="block w-full rounded-xl bg-[#25623f] text-white font-semibold py-3 text-sm text-center mt-2"
-          >
-            Escribir por WhatsApp
-          </a>
+          <div className="flex gap-2 mt-2">
+            <a
+              href={linkWhatsApp(cliente.telefono, `Hola ${cliente.nombre} 💆`)}
+              target="_blank"
+              rel="noopener"
+              className="flex-1 rounded-xl bg-[#25623f] text-white font-semibold py-3 text-sm text-center"
+            >
+              Escribir por WhatsApp
+            </a>
+            <button
+              onClick={() => setEditando(true)}
+              className="rounded-xl border px-4 font-semibold text-sm flex items-center gap-1.5"
+              aria-label="Editar"
+            >
+              <Pencil size={16} />
+              Editar
+            </button>
+          </div>
         )}
       </DialogContent>
     </Dialog>
