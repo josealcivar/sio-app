@@ -36,6 +36,7 @@ export default function DetalleCliente({ cliente, onClose, onGuardar }: Props) {
   return (
     <Dialog open={!!cliente} onOpenChange={(abierto) => !abierto && onClose()}>
       <DialogContent className="max-w-sm">
+        
         {/* encabezado con avatar */}
         <div className="flex items-center gap-3 mb-2">
           <div className="w-12 h-12 rounded-full bg-secondary text-primary grid place-items-center font-serif text-lg font-semibold shrink-0">
@@ -125,9 +126,12 @@ export default function DetalleCliente({ cliente, onClose, onGuardar }: Props) {
             >
               Escribir por WhatsApp
             </a>
-            <button
-              onClick={() => setEditando(true)}
-              className="rounded-xl border px-4 font-semibold text-sm flex items-center gap-1.5"
+          <button
+              onClick={(e) => {
+                e.stopPropagation()
+                setEditando(true)
+              }}
+              className="rounded-xl border px-4 font-semibold text-sm flex items-center gap-1.5 active:bg-secondary"
               aria-label="Editar"
             >
               <Pencil size={16} />

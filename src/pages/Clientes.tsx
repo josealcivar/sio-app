@@ -36,9 +36,11 @@ export default function Clientes() {
   }
 
 
+
   function guardarObs(id: string, cambios: { telefono: string; observaciones: string }) {
     setLista(lista.map((c) => (c.id === id ? { ...c, ...cambios } : c)))
   }
+
 
   return (
     <div className="p-5">
