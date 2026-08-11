@@ -35,8 +35,9 @@ export default function Clientes() {
     setMostrarForm(false)
   }
 
-  function guardarObs(id: string, observaciones: string) {
-    setLista(lista.map((c) => (c.id === id ? { ...c, observaciones } : c)))
+
+  function guardarObs(id: string, cambios: { telefono: string; observaciones: string }) {
+    setLista(lista.map((c) => (c.id === id ? { ...c, ...cambios } : c)))
   }
 
   return (
