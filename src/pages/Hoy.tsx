@@ -2,9 +2,9 @@ import { useState } from "react"
 import {
   citasHoy,
   fechaHoyTexto,
-  citasSemana,
-  totalReactivar,
-  totalRecordatorios,
+  // citasSemana,
+  // totalReactivar,
+  // totalRecordatorios,
   proximaCita,
 } from "@/lib/datos"
 import { Button } from "@/components/ui/button"
