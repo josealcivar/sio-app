@@ -1,0 +1,167 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/figtree";
+@import "@fontsource-variable/fraunces";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.75rem;
+
+  --background: #E9F0EC;
+  --foreground: #16322B;
+
+  --card: #FFFFFF;
+  --card-foreground: #16322B;
+
+  --popover: #FFFFFF;
+  --popover-foreground: #16322B;
+
+  --primary: #2F6B5A;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #DCEAE4;
+  --secondary-foreground: #16322B;
+
+  --muted: #DCEAE4;
+  --muted-foreground: #6E837C;
+
+  --accent: #DCEAE4;
+  --accent-foreground: #2F6B5A;
+
+  --destructive: #B25B44;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #D8E2DE;
+  --input: #D8E2DE;
+  --ring: #2F6B5A;
+
+  /* Acento cálido para clientes dormidos */
+  --honey: #A9762A;
+  --honey-foreground: #FFFFFF;
+  --honey-soft: #F5EAD4;
+
+  --chart-1: #2F6B5A;
+  --chart-2: #4E9B84;
+  --chart-3: #A9762A;
+  --chart-4: #C9A24E;
+  --chart-5: #B25B44;
+
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #16322B;
+  --sidebar-primary: #2F6B5A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #DCEAE4;
+  --sidebar-accent-foreground: #2F6B5A;
+  --sidebar-border: #D8E2DE;
+  --sidebar-ring: #2F6B5A;
+}
+
+.dark {
+  --background: #0F1E1A;
+  --foreground: #E9F0EC;
+
+  --card: #16322B;
+  --card-foreground: #E9F0EC;
+
+  --popover: #16322B;
+  --popover-foreground: #E9F0EC;
+
+  --primary: #4E9B84;
+  --primary-foreground: #0F1E1A;
+
+  --secondary: #1E3B33;
+  --secondary-foreground: #E9F0EC;
+
+  --muted: #1E3B33;
+  --muted-foreground: #9DB3AC;
+
+  --accent: #1E3B33;
+  --accent-foreground: #4E9B84;
+
+  --destructive: #C9705A;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #294a41;
+  --input: #294a41;
+  --ring: #4E9B84;
+
+  --honey: #C9A24E;
+  --honey-foreground: #0F1E1A;
+  --honey-soft: #3A3018;
+
+  --chart-1: #4E9B84;
+  --chart-2: #2F6B5A;
+  --chart-3: #C9A24E;
+  --chart-4: #A9762A;
+  --chart-5: #C9705A;
+
+  --sidebar: #16322B;
+  --sidebar-foreground: #E9F0EC;
+  --sidebar-primary: #4E9B84;
+  --sidebar-primary-foreground: #0F1E1A;
+  --sidebar-accent: #1E3B33;
+  --sidebar-accent-foreground: #4E9B84;
+  --sidebar-border: #294a41;
+  --sidebar-ring: #4E9B84;
+}
+
+@theme inline {
+  --font-sans: "Figtree Variable", system-ui, sans-serif;
+  --font-serif: "Fraunces Variable", Georgia, serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-honey: var(--honey);
+  --color-honey-foreground: var(--honey-foreground);
+  --color-honey-soft: var(--honey-soft);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+}
