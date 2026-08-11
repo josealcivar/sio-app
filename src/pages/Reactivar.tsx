@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { clientes, semanasDesde, semanasAtraso } from "@/lib/datos"
 import { mensajeReactivar } from "@/lib/mensajes"
-import { Card } from "@/components/ui/card"
 import HojaWhatsApp, { type DatosHoja } from "@/components/HojaWhatsapp"
 
 export default function Reactivar() {
@@ -18,55 +17,39 @@ export default function Reactivar() {
         Pasaron su ciclo y no tienen cita agendada
       </p>
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         {dormidos.map((c) => {
           const semanas = semanasDesde(c.ultimaVisita)
-          const atraso = semanasAtraso(c)
-          const pct = Math.min((semanas / c.cadenciaSemanas) * 100, 100)
-          const dueLine = Math.min((c.cadenciaSemanas / semanas) * 100, 100)
-          const fondo = `linear-gradient(90deg, var(--primary) 0 ${dueLine}%, var(--honey) ${dueLine}% 100%)`
+          const inicial = c.nombre.charAt(0).toUpperCase()
 
           return (
-            <Card key={c.id} className="p-4">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <p className="font-semibold">{c.nombre}</p>
+            <div key={c.id} className="bg-card border rounded-2xl p-4">
+              <div className="flex items-center gap-3">
+                {/* avatar */}
+                <div className="w-10 h-10 rounded-full bg-honey-soft text-honey grid place-items-center font-serif font-semibold shrink-0">
+                  {inicial}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold truncate">{c.nombre}</p>
                   <p className="text-sm text-muted-foreground">
-                    Hace {semanas} sem · ciclo de {c.cadenciaSemanas}
+                    Sin venir hace {semanas} semanas
                   </p>
                 </div>
-                <span className="text-xs font-semibold px-2 py-1 rounded-full bg-honey-soft text-honey">
-                  +{atraso} sem
-                </span>
+                <button
+                  onClick={() =>
+                    setHoja({
+                      titulo: "Invitar a volver",
+                      nombre: c.nombre,
+                      telefono: c.telefono,
+                      mensaje: mensajeReactivar(c.nombre, semanas),
+                    })
+                  }
+                  className="rounded-lg bg-[#25623f] text-white text-sm font-semibold px-4 py-2 shrink-0"
+                >
+                  Escribir
+                </button>
               </div>
-
-              <div className="mt-3">
-                <div className="h-2 rounded-full bg-muted relative overflow-hidden">
-                  <div
-                    className="h-full rounded-full"
-                    style={{ width: `${pct}%`, background: fondo }}
-                  />
-                </div>
-                <div className="flex justify-between mt-1.5 text-xs text-muted-foreground">
-                  <span>Su ciclo: {c.cadenciaSemanas} semanas</span>
-                  <span className="text-honey font-semibold">Atrasada {atraso} sem</span>
-                </div>
-              </div>
-
-              <button
-                onClick={() =>
-                  setHoja({
-                    titulo: "Invitar a volver",
-                    nombre: c.nombre,
-                    telefono: c.telefono,
-                    mensaje: mensajeReactivar(c.nombre, semanas),
-                  })
-                }
-                className="mt-3 w-full rounded-xl bg-[#25623f] text-white font-semibold py-3 text-sm"
-              >
-                Escribir por WhatsApp
-              </button>
-            </Card>
+            </div>
           )
         })}
       </div>

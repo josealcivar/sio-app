@@ -54,37 +54,61 @@ export default function Clientes() {
         className="mb-3"
       />
 
-      <Button className="w-full mb-4" onClick={() => setMostrarForm(!mostrarForm)}>
-        {mostrarForm ? "Cancelar" : "+ Nuevo cliente"}
-      </Button>
+      {!mostrarForm && (
+        <Button className="w-full mb-4" onClick={() => setMostrarForm(true)}>
+          + Nuevo cliente
+        </Button>
+      )}
 
       {mostrarForm && (
         <Card className="p-4 mb-4 space-y-3">
+          <p className="font-semibold">Nuevo cliente</p>
           <Input placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} />
           <Input placeholder="Teléfono (593987654321)" value={telefono} onChange={(e) => setTelefono(e.target.value)} />
-          <Button className="w-full" onClick={agregar}>Guardar</Button>
+          <div className="flex gap-2">
+            <Button variant="outline" className="flex-1" onClick={() => setMostrarForm(false)}>
+              Cancelar
+            </Button>
+            <Button className="flex-1" onClick={agregar}>
+              Guardar
+            </Button>
+          </div>
         </Card>
       )}
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         {filtrados.map((c) => {
           const semanas = semanasDesde(c.ultimaVisita)
+          const dormido = c.ultimaVisita && semanas > c.cadenciaSemanas
+          const inicial = c.nombre.charAt(0).toUpperCase()
           return (
-            <Card
+            <div
               key={c.id}
-              className="p-4 flex items-center justify-between gap-2 cursor-pointer hover:border-primary transition-colors"
               onClick={() => setSeleccionado(c)}
+              className="bg-card border rounded-2xl p-3.5 flex items-center gap-3 cursor-pointer hover:border-primary transition-colors"
             >
-              <div>
-                <p className="font-semibold">{c.nombre}</p>
+              {/* avatar con inicial */}
+              <div className="w-10 h-10 rounded-full bg-secondary text-primary grid place-items-center font-serif font-semibold shrink-0">
+                {inicial}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="font-semibold truncate">{c.nombre}</p>
+                  {c.observaciones && (
+                    <span className="text-xs text-muted-foreground shrink-0">📝</span>
+                  )}
+                </div>
                 <p className="text-sm text-muted-foreground">
                   {c.ultimaVisita ? `Hace ${semanas} sem · ciclo ${c.cadenciaSemanas}` : "Sin visitas aún"}
                 </p>
               </div>
-              {c.observaciones && (
-                <span className="text-xs text-muted-foreground shrink-0">📝</span>
-              )}
-            </Card>
+              {/* indicador de estado: punto de color */}
+              <span
+                className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                  dormido ? "bg-honey" : c.ultimaVisita ? "bg-primary" : "bg-border"
+                }`}
+              />
+            </div>
           )
         })}
         {filtrados.length === 0 && (
