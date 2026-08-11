@@ -117,16 +117,18 @@ export default function DetalleCliente({ cliente, onClose, onGuardar }: Props) {
             </button>
           </div>
         ) : (
-          <div className="flex gap-2 mt-2">
+<div className="flex gap-2 mt-2" style={{ touchAction: "manipulation" }}>
             <a
               href={linkWhatsApp(cliente.telefono, `Hola ${cliente.nombre} 💆`)}
               target="_blank"
               rel="noopener"
+              onClick={(e) => e.stopPropagation()}
               className="flex-1 rounded-xl bg-[#25623f] text-white font-semibold py-3 text-sm text-center"
             >
               Escribir por WhatsApp
             </a>
-          <button
+            <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation()
                 setEditando(true)
