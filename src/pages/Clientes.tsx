@@ -63,8 +63,8 @@ export default function Clientes() {
         </Button>
       )}
 
-      {mostrarForm && (
-        <Card className="p-4 mb-4 space-y-3">
+   {mostrarForm && (
+        <Card className="p-4 mb-4 space-y-3 animate-in slide-in-from-top-2 fade-in duration-500">
           <p className="font-semibold">Nuevo cliente</p>
           <Input placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} />
           <Input placeholder="Teléfono (593987654321)" value={telefono} onChange={(e) => setTelefono(e.target.value)} />

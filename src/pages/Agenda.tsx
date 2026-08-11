@@ -48,7 +48,7 @@ export default function Agenda() {
 
       <p className="text-sm text-muted-foreground mb-3">Toca un horario libre</p>
 
-      <div className="space-y-2">
+ <div className="space-y-1.5">
         {franjas.map((hora) => {
           const cita = ocupadas.get(hora)
           const libre = !cita
@@ -57,17 +57,23 @@ export default function Agenda() {
               key={hora}
               disabled={!libre}
               onClick={() => setFranjaElegida(hora)}
-              className={`w-full flex items-center gap-3 rounded-xl p-3 text-left transition-colors ${
-                libre ? "bg-card border hover:border-primary" : "bg-muted"
+              className={`w-full flex items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors ${
+                libre
+                  ? "bg-card border border-dashed hover:border-primary hover:border-solid active:bg-secondary"
+                  : "bg-secondary"
               }`}
             >
-              <span className="font-serif text-base font-semibold text-primary w-14">
+              <span
+                className={`font-serif text-base font-semibold w-14 shrink-0 ${
+                  libre ? "text-muted-foreground" : "text-primary"
+                }`}
+              >
                 {hora}
               </span>
               {libre ? (
                 <span className="text-sm text-muted-foreground">Libre</span>
               ) : (
-                <span className="text-sm font-medium">{cita!.nombre}</span>
+                <span className="text-base font-semibold">{cita!.nombre}</span>
               )}
             </button>
           )
