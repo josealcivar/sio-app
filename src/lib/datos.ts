@@ -36,7 +36,7 @@ export const clientes: Cliente[] = [
 ]
 
 export const citasManana: Cita[] = [
-  { id: "m1", nombre: "Lucía Fernández", hora: "10:00", servicio: "Limpieza facial profunda" },
+  { id: "m1", nombre: "Valeria Velez", hora: "10:00", servicio: "Limpieza facial profunda" },
   { id: "m2", nombre: "Carla Mendoza", hora: "12:00", servicio: "Limpieza + hidratación" },
   { id: "m3", nombre: "Renata Díaz", hora: "17:00", servicio: "Limpieza facial profunda" },
 ]
@@ -51,3 +51,5 @@ export function semanasDesde(fechaISO: string | null): number {
 export function semanasAtraso(c: Cliente): number {
   return semanasDesde(c.ultimaVisita) - c.cadenciaSemanas
 }
+
+// 593996649325
