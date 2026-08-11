@@ -2,6 +2,9 @@ import { useState } from "react"
 import { citasHoy } from "@/lib/datos"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Link } from "react-router-dom"
+
+
 
 export default function Hoy() {
   const [vinieron, setVinieron] = useState<string[]>([])
@@ -13,7 +16,9 @@ export default function Hoy() {
       </p>
       <h1 className="font-serif text-3xl font-semibold">Hoy</h1>
       <p className="text-muted-foreground mb-5">{citasHoy.length} citas</p>
-
+      <Link to="/agenda">
+        <Button className="w-full mb-5">+ Agendar cita</Button>
+      </Link>
       <div className="space-y-3">
         {citasHoy.map((cita) => {
           const vino = vinieron.includes(cita.id)

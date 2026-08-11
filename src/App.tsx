@@ -9,7 +9,7 @@ import Reactivar from "@/pages/Reactivar"
 import Recordatorios from "@/pages/Recordatorios"
 import Clientes from "@/pages/Clientes"
 import Cabecera from "./components/Cabecera"
-
+import Agenda from "@/pages/Agenda"
 // ⚠️ MODO PRUEBA: entra sin Supabase. Poner en false cuando conectes la auth real.
 const MODO_PRUEBA = true
 
@@ -45,8 +45,10 @@ export default function App() {
         <div className="pb-28 max-w-md mx-auto">
            <Cabecera />
         <Routes>
+
           <Route path="/" element={<Hoy />} />
           <Route path="/reactivar" element={<Reactivar />} />
+          <Route path="/agenda" element={<Agenda />} />
           <Route path="/recordatorios" element={<Recordatorios />} />
           <Route path="/clientes" element={<Clientes />} />
         </Routes>

@@ -1,10 +1,13 @@
+import { useState } from "react"
 import { clientes, semanasDesde, semanasAtraso } from "@/lib/datos"
-import { mensajeReactivar, linkWhatsApp } from "@/lib/mensajes"
+import { mensajeReactivar } from "@/lib/mensajes"
 import { Card } from "@/components/ui/card"
+import HojaWhatsApp, { type DatosHoja } from "@/components/HojaWhatsapp"
 
 export default function Reactivar() {
+  const [hoja, setHoja] = useState<DatosHoja | null>(null)
   const dormidos = clientes.filter((c) => semanasAtraso(c) > 0)
-   
+
   return (
     <div className="p-5">
       <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">
@@ -20,8 +23,8 @@ export default function Reactivar() {
           const semanas = semanasDesde(c.ultimaVisita)
           const atraso = semanasAtraso(c)
           const pct = Math.min((semanas / c.cadenciaSemanas) * 100, 100)
-          const dueLine = (c.cadenciaSemanas / semanas) * 100
-          const msg = mensajeReactivar(c.nombre, semanas)
+          const dueLine = Math.min((c.cadenciaSemanas / semanas) * 100, 100)
+          const fondo = `linear-gradient(90deg, var(--primary) 0 ${dueLine}%, var(--honey) ${dueLine}% 100%)`
 
           return (
             <Card key={c.id} className="p-4">
@@ -37,15 +40,11 @@ export default function Reactivar() {
                 </span>
               </div>
 
-              {/* medidor de cadencia */}
               <div className="mt-3">
                 <div className="h-2 rounded-full bg-muted relative overflow-hidden">
                   <div
                     className="h-full rounded-full"
-                    style={{
-                      width: `${pct}%`,
-                      background: `linear-gradient(90deg, var(--primary) 0 ${dueLine}%, var(--honey) ${dueLine}% 100%)`,
-                    }}
+                    style={{ width: `${pct}%`, background: fondo }}
                   />
                 </div>
                 <div className="flex justify-between mt-1.5 text-xs text-muted-foreground">
@@ -54,17 +53,25 @@ export default function Reactivar() {
                 </div>
               </div>
 
-              <a
-                href={linkWhatsApp(c.telefono, msg)}
-                target="_blank"
-                rel="noopener"
-                className="mt-3 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#25623f] text-white font-semibold py-3 text-sm">
+              <button
+                onClick={() =>
+                  setHoja({
+                    titulo: "Invitar a volver",
+                    nombre: c.nombre,
+                    telefono: c.telefono,
+                    mensaje: mensajeReactivar(c.nombre, semanas),
+                  })
+                }
+                className="mt-3 w-full rounded-xl bg-[#25623f] text-white font-semibold py-3 text-sm"
+              >
                 Escribir por WhatsApp
-              </a>
+              </button>
             </Card>
           )
         })}
       </div>
+
+      <HojaWhatsApp datos={hoja} onClose={() => setHoja(null)} />
     </div>
   )
 }

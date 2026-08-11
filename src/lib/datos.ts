@@ -52,4 +52,14 @@ export function semanasAtraso(c: Cliente): number {
   return semanasDesde(c.ultimaVisita) - c.cadenciaSemanas
 }
 
+// Genera las franjas de 30 min entre dos horas (formato "HH:MM")
+export function generarFranjas(inicio = 9, fin = 18, minutos = 30): string[] {
+  const franjas: string[] = []
+  for (let h = inicio; h < fin; h++) {
+    for (let m = 0; m < 60; m += minutos) {
+      franjas.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`)
+    }
+  }
+  return franjas
+}
 // 593996649325
