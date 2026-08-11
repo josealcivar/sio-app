@@ -16,10 +16,13 @@ export default function Hoy() {
       </p>
       <h1 className="font-serif text-3xl font-semibold">Hoy</h1>
       <p className="text-muted-foreground mb-5">{citasHoy.length} citas</p>
-      <Link to="/agenda">
-        <Button className="w-full mb-5">+ Agendar cita</Button>
-      </Link>
-      <div className="space-y-3">
+
+      <div className="flex justify-end mb-5">
+  <Link to="/agenda">
+    <Button>+ Agendar cita</Button>
+  </Link>
+</div>
+      <div className="space-y-2">
         {citasHoy.map((cita) => {
           const vino = vinieron.includes(cita.id)
           return (
