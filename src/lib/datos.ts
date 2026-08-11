@@ -10,6 +10,7 @@ export type Cliente = {
 export type Cita = {
   id: string
   nombre: string
+  fecha: string   // "2026-08-12" (ISO)
   hora: string
   servicio: string
 }
@@ -23,10 +24,10 @@ function haceSemanas(n: number): string {
 
 // --- Datos de ejemplo (se reemplazan por Supabase después) ---
 export const citasHoy: Cita[] = [
-  { id: "1", nombre: "Daniela Cruz", hora: "10:00", servicio: "Limpieza facial profunda" },
-  { id: "2", nombre: "Paula Herrera", hora: "11:30", servicio: "Limpieza + hidratación" },
-  { id: "3", nombre: "Mónica Vega", hora: "15:00", servicio: "Primera cita · valoración" },
-  { id: "4", nombre: "Andrea Solís", hora: "16:30", servicio: "Limpieza facial profunda" },
+  { id: "1", nombre: "Daniela Cruz", fecha: hoyISO(), hora: "10:00", servicio: "Limpieza facial profunda" },
+  { id: "2", nombre: "Paula Herrera", fecha: hoyISO(), hora: "11:30", servicio: "Limpieza + hidratación" },
+  { id: "3", nombre: "Mónica Vega", fecha: hoyISO(), hora: "15:00", servicio: "Primera cita · valoración" },
+  { id: "4", nombre: "Andrea Solís", fecha: hoyISO(), hora: "16:30", servicio: "Limpieza facial profunda" },
 ]
 
 export const clientes: Cliente[] = [
@@ -36,9 +37,9 @@ export const clientes: Cliente[] = [
 ]
 
 export const citasManana: Cita[] = [
-  { id: "m1", nombre: "Valeria Velez", hora: "10:00", servicio: "Limpieza facial profunda" },
-  { id: "m2", nombre: "Carla Mendoza", hora: "12:00", servicio: "Limpieza + hidratación" },
-  { id: "m3", nombre: "Renata Díaz", hora: "17:00", servicio: "Limpieza facial profunda" },
+  { id: "m1", nombre: "Valeria Velez",fecha: hoyISO(), hora: "10:00", servicio: "Limpieza facial profunda" },
+  { id: "m2", nombre: "Carla Mendoza", fecha: hoyISO(), hora: "12:00", servicio: "Limpieza + hidratación" },
+  { id: "m3", nombre: "Renata Díaz",fecha: hoyISO(),  hora: "17:00", servicio: "Limpieza facial profunda" },
 ]
 
 // --- Cálculos ---
@@ -61,5 +62,9 @@ export function generarFranjas(inicio = 9, fin = 18, minutos = 30): string[] {
     }
   }
   return franjas
+}
+
+export function hoyISO(): string {
+  return new Date().toISOString().slice(0, 10)
 }
 // 593996649325

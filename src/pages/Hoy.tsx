@@ -4,8 +4,6 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 
-
-
 export default function Hoy() {
   const [vinieron, setVinieron] = useState<string[]>([])
 
@@ -15,14 +13,15 @@ export default function Hoy() {
         Miércoles 12 de agosto
       </p>
       <h1 className="font-serif text-3xl font-semibold">Hoy</h1>
-      <p className="text-muted-foreground mb-5">{citasHoy.length} citas</p>
 
-      <div className="flex justify-end mb-5">
-  <Link to="/agenda">
-    <Button>+ Agendar cita</Button>
-  </Link>
-</div>
-      <div className="space-y-2">
+      <div className="flex items-center justify-between mb-5">
+        <p className="text-muted-foreground">{citasHoy.length} citas</p>
+        <Link to="/agenda">
+          <Button size="sm">+ Agendar cita</Button>
+        </Link>
+      </div>
+
+      {/* <div className="space-y-2">
         {citasHoy.map((cita) => {
           const vino = vinieron.includes(cita.id)
           return (
@@ -43,6 +42,35 @@ export default function Hoy() {
                 {vino ? "✓ Vino" : "Vino"}
               </Button>
             </Card>
+          )
+        })}
+      </div> */}
+
+      <div className="space-y-2">
+        {citasHoy.map((cita) => {
+          const vino = vinieron.includes(cita.id)
+          return (
+            <div
+              key={cita.id}
+              className="bg-card border rounded-2xl p-4 flex flex-row items-center gap-4"
+            >
+              <span className="font-serif text-lg font-semibold text-primary w-14 shrink-0">
+                {cita.hora}
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold">{cita.nombre}</p>
+                <p className="text-sm text-muted-foreground truncate">{cita.servicio}</p>
+              </div>
+              <Button
+                variant={vino ? "secondary" : "default"}
+                size="sm"
+                disabled={vino}
+                onClick={() => setVinieron([...vinieron, cita.id])}
+                className="shrink-0"
+              >
+                {vino ? "✓ Vino" : "Vino"}
+              </Button>
+            </div>
           )
         })}
       </div>

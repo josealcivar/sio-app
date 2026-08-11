@@ -1,15 +1,19 @@
 import { useState } from "react"
-import { citasHoy as citasIniciales, clientes, generarFranjas, type Cita } from "@/lib/datos"
+import { citasHoy as citasIniciales, clientes, generarFranjas, hoyISO, type Cita } from "@/lib/datos"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 export default function Agenda() {
   const [citas, setCitas] = useState<Cita[]>(citasIniciales)
+  const [fecha, setFecha] = useState(hoyISO())
   const [franjaElegida, setFranjaElegida] = useState<string | null>(null)
   const [clienteId, setClienteId] = useState("")
 
   const franjas = generarFranjas(9, 18, 30)
-  const ocupadas = new Map(citas.map((c) => [c.hora, c]))
+
+  // solo las citas de la fecha elegida
+  const citasDelDia = citas.filter((c) => c.fecha === fecha)
+  const ocupadas = new Map(citasDelDia.map((c) => [c.hora, c]))
 
   function agendar() {
     if (!franjaElegida || !clienteId) return
@@ -17,7 +21,7 @@ export default function Agenda() {
     if (!cliente) return
     setCitas([
       ...citas,
-      { id: crypto.randomUUID(), nombre: cliente.nombre, hora: franjaElegida, servicio: "Limpieza facial" },
+      { id: crypto.randomUUID(), nombre: cliente.nombre, fecha, hora: franjaElegida, servicio: "Limpieza facial" },
     ])
     setFranjaElegida(null)
     setClienteId("")
@@ -26,10 +30,23 @@ export default function Agenda() {
   return (
     <div className="p-5">
       <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">
-        Miércoles 12 de agosto
+        Agenda
       </p>
-      <h1 className="font-serif text-3xl font-semibold">Agenda</h1>
-      <p className="text-muted-foreground mb-5">Toca un horario libre para agendar</p>
+      <h1 className="font-serif text-3xl font-semibold mb-4">Agendar cita</h1>
+
+      {/* selector de fecha */}
+      <label className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">
+        Fecha
+      </label>
+      <input
+        type="date"
+        value={fecha}
+        min={hoyISO()}
+        onChange={(e) => setFecha(e.target.value)}
+        className="w-full rounded-lg border bg-background p-3 text-lg mt-1 mb-5"
+      />
+
+      <p className="text-sm text-muted-foreground mb-3">Toca un horario libre</p>
 
       <div className="space-y-2">
         {franjas.map((hora) => {
@@ -41,9 +58,7 @@ export default function Agenda() {
               disabled={!libre}
               onClick={() => setFranjaElegida(hora)}
               className={`w-full flex items-center gap-3 rounded-xl p-3 text-left transition-colors ${
-                libre
-                  ? "bg-card border hover:border-primary"
-                  : "bg-muted"
+                libre ? "bg-card border hover:border-primary" : "bg-muted"
               }`}
             >
               <span className="font-serif text-base font-semibold text-primary w-14">
@@ -59,7 +74,6 @@ export default function Agenda() {
         })}
       </div>
 
-      {/* Formulario emergente al elegir franja */}
       {franjaElegida && (
         <div
           className="fixed inset-0 bg-black/40 z-40 flex items-end"
@@ -72,7 +86,7 @@ export default function Agenda() {
           >
             <h3 className="font-serif text-2xl font-semibold mb-1">Agendar cita</h3>
             <p className="text-muted-foreground text-sm mb-4">
-              {franjaElegida} · Miércoles 12 de agosto
+              {fecha} · {franjaElegida}
             </p>
 
             <label className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">
