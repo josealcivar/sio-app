@@ -4,7 +4,7 @@ import { Calendar, Moon, Bell, Users } from "lucide-react"
 const tabs = [
   { to: "/", label: "Hoy", Icon: Calendar, end: true },
   { to: "/reactivar", label: "Reactivar", Icon: Moon },
-  { to: "/agendar", label: "Agendar", Icon: Calendar },
+  { to: "/agenda", label: "Agendar", Icon: Calendar },
   { to: "/recordatorios", label: "Recordatorios", Icon: Bell },
   { to: "/clientes", label: "Clientes", Icon: Users },
 ]
