@@ -67,4 +67,38 @@ export function generarFranjas(inicio = 9, fin = 18, minutos = 30): string[] {
 export function hoyISO(): string {
   return new Date().toISOString().slice(0, 10)
 }
+
+
+// Cuenta cuántas citas de esta semana (de hoy a +7 días)
+export function citasSemana(): number {
+  const hoy = new Date()
+  const enUnaSemana = new Date()
+  enUnaSemana.setDate(hoy.getDate() + 7)
+  return [...citasHoy, ...citasManana].filter((c) => {
+    const f = new Date(c.fecha)
+    return f >= hoy && f <= enUnaSemana
+  }).length
+}
+
+// Cuántos clientes hay por reactivar
+export function totalReactivar(): number {
+  return clientes.filter((c) => semanasAtraso(c) > 0).length
+}
+
+// Cuántos recordatorios hay para mañana
+export function totalRecordatorios(): number {
+  return citasManana.length
+}
+export function proximaCita(atendidas: string[]) {
+  return citasHoy.find((c) => !atendidas.includes(c.id)) ?? null
+}
+
+export function fechaHoyTexto(): string {
+  return new Date().toLocaleDateString("es-EC", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  })
+}
+
 // 593996649325
