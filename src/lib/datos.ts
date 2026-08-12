@@ -64,8 +64,23 @@ export function generarFranjas(inicio = 9, fin = 18, minutos = 30): string[] {
   return franjas
 }
 
-export function hoyISO(): string {
-  return new Date().toISOString().slice(0, 10)
+// export function hoyISO(): string {
+//   return new Date().toISOString().slice(0, 10)
+// }
+
+// Fecha local de Ecuador en formato YYYY-MM-DD, sin corrimiento de zona
+export function fechaLocalISO(offsetDias = 0): string {
+  const d = new Date()
+  d.setDate(d.getDate() + offsetDias)
+  // usa los componentes locales, no UTC
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, "0")
+  const dia = String(d.getDate()).padStart(2, "0")
+  return `${y}-${m}-${dia}`
+}
+
+export function hoyISO() {
+  return fechaLocalISO(0)
 }
 
 

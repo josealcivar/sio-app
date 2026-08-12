@@ -1,5 +1,6 @@
 import { supabase } from "./supabase"
-import type { Cliente, } from "./datos"
+import type { Cliente } from "./datos"
+import { fechaLocalISO } from "./datos"
 
 // Trae todos los clientes del usuario logueado
 export async function obtenerClientes(): Promise<Cliente[]> {
@@ -122,10 +123,11 @@ export async function obtenerCitasPorFecha(fecha: string) {
 // ahora viene la parte de marcar las citas como vino o no llegó 
 
 // Trae las citas de hoy con nombre del cliente
+// Trae las citas de hoy con nombre del cliente
 export async function obtenerCitasHoy() {
-  const hoy = new Date().toISOString().slice(0, 10)
-  return obtenerCitasPorFecha(hoy)
+  return obtenerCitasPorFecha(fechaLocalISO(0))
 }
+
 
 // Marca una cita como "vino"
 export async function marcarVino(citaId: string): Promise<void> {
@@ -138,11 +140,9 @@ export async function marcarVino(citaId: string): Promise<void> {
 
 // recordatorios
 // Trae las citas de mañana con nombre del cliente
+// Trae las citas de mañana con nombre del cliente
 export async function obtenerCitasManana() {
-  const d = new Date()
-  d.setDate(d.getDate() + 1)
-  const manana = d.toISOString().slice(0, 10)
-  return obtenerCitasPorFecha(manana)
+  return obtenerCitasPorFecha(fechaLocalISO(1))
 }
 
 

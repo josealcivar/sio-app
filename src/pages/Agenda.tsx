@@ -78,7 +78,12 @@ export default function Agenda() {
         className="w-full rounded-lg border bg-background p-3 text-lg mt-1 mb-5"
       />
 
-      <p className="text-sm text-muted-foreground mb-3">Toca un horario libre</p>
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-sm text-muted-foreground">Toca un horario libre</p>
+         <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-secondary text-primary">
+          {citasDelDia.length} {citasDelDia.length === 1 ? "cita agendada" : "citas agendadas"}
+        </span>
+      </div>
 
       {cargando ? (
         <p className="text-center text-muted-foreground py-8">Cargando…</p>
