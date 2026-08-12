@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { semanasDesde, type Cliente } from "@/lib/datos"
-
+import { normalizarTelefono, telefonoValido } from "@/lib/telefono"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -47,6 +47,11 @@ export default function Clientes() {
 
   async function agregar() {
     if (!nombre.trim() || !telefono.trim()) return
+    
+    if (!telefonoValido(normalizarTelefono(telefono))) {
+      alert("El teléfono no parece válido. Ej: 0982348787")
+      return
+    }
     try {
       const nuevo = await crearCliente({
         nombre: nombre.trim(),

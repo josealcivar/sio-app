@@ -69,7 +69,7 @@ export async function actualizarCliente(
   const { error } = await supabase
     .from("clientes")
     .update({
-      telefono: cambios.telefono,
+      telefono: normalizarTelefono(cambios.telefono),
       observaciones: cambios.observaciones,
     })
     .eq("id", id)
