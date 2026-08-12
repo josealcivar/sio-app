@@ -3,10 +3,12 @@ import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
+import { Eye, EyeOff } from "lucide-react"
 
 export default function Login() {
-  const [email, setEmail] = useState("mail@mail.com")
-  const [password, setPassword] = useState("mail1234")
+  const [email, setEmail] = useState("prueba@sio.app")
+  const [password, setPassword] = useState("")
+  const [verPassword, setVerPassword] = useState(false)
   const [error, setError] = useState("")
   const [cargando, setCargando] = useState(false)
 
@@ -15,7 +17,6 @@ export default function Login() {
     setCargando(true)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) setError("Correo o contraseña incorrectos")
-
     setCargando(false)
   }
 
@@ -33,13 +34,24 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && entrar()}
-          />
+          <div className="relative">
+            <Input
+              type={verPassword ? "text" : "password"}
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && entrar()}
+              className="pr-10"
+            />
+            <button
+              type="button"
+              onClick={() => setVerPassword(!verPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              aria-label={verPassword ? "Ocultar contraseña" : "Ver contraseña"}
+            >
+              {verPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
           {error && <p className="text-destructive text-sm">{error}</p>}
           <Button className="w-full" onClick={entrar} disabled={cargando}>
             {cargando ? "Entrando…" : "Entrar"}
