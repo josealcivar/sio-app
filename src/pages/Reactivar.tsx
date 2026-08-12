@@ -1,10 +1,21 @@
-import { useState } from "react"
-import { clientes, semanasDesde, semanasAtraso } from "@/lib/datos"
+import { useState, useEffect } from "react"
+import { semanasDesde, semanasAtraso, type Cliente } from "@/lib/datos"
+import { obtenerClientes } from "@/lib/api"
 import { mensajeReactivar } from "@/lib/mensajes"
-import HojaWhatsApp, { type DatosHoja } from "@/components/HojaWhatsapp"
+import HojaWhatsApp, { type DatosHoja } from "@/components/HojaWhatsApp"
 
 export default function Reactivar() {
   const [hoja, setHoja] = useState<DatosHoja | null>(null)
+  const [clientes, setClientes] = useState<Cliente[]>([])
+  const [cargando, setCargando] = useState(true)
+
+  useEffect(() => {
+    obtenerClientes()
+      .then(setClientes)
+      .catch(console.error)
+      .finally(() => setCargando(false))
+  }, [])
+
   const dormidos = clientes.filter((c) => semanasAtraso(c) > 0)
 
   return (
@@ -17,42 +28,49 @@ export default function Reactivar() {
         Pasaron su ciclo y no tienen cita agendada
       </p>
 
-      <div className="space-y-2">
-        {dormidos.map((c) => {
-          const semanas = semanasDesde(c.ultimaVisita)
-          const inicial = c.nombre.charAt(0).toUpperCase()
+      {cargando ? (
+        <p className="text-center text-muted-foreground py-8">Cargando…</p>
+      ) : dormidos.length === 0 ? (
+        <p className="text-center text-muted-foreground py-8">
+          No tienes clientes por reactivar 🎉
+        </p>
+      ) : (
+        <div className="space-y-2">
+          {dormidos.map((c) => {
+            const semanas = semanasDesde(c.ultimaVisita)
+            const inicial = c.nombre.charAt(0).toUpperCase()
 
-          return (
-            <div key={c.id} className="bg-card border rounded-2xl p-4">
-              <div className="flex items-center gap-3">
-                {/* avatar */}
-                <div className="w-10 h-10 rounded-full bg-honey-soft text-honey grid place-items-center font-serif font-semibold shrink-0">
-                  {inicial}
+            return (
+              <div key={c.id} className="bg-card border rounded-2xl p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-honey-soft text-honey grid place-items-center font-serif font-semibold shrink-0">
+                    {inicial}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold truncate">{c.nombre}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Sin venir hace {semanas} semanas
+                    </p>
+                  </div>
+                  <button
+                    onClick={() =>
+                      setHoja({
+                        titulo: "Invitar a volver",
+                        nombre: c.nombre,
+                        telefono: c.telefono,
+                        mensaje: mensajeReactivar(c.nombre, semanas),
+                      })
+                    }
+                    className="rounded-lg bg-[#25623f] text-white text-sm font-semibold px-4 py-2 shrink-0"
+                  >
+                    Escribir
+                  </button>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold truncate">{c.nombre}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Sin venir hace {semanas} semanas
-                  </p>
-                </div>
-                <button
-                  onClick={() =>
-                    setHoja({
-                      titulo: "Invitar a volver",
-                      nombre: c.nombre,
-                      telefono: c.telefono,
-                      mensaje: mensajeReactivar(c.nombre, semanas),
-                    })
-                  }
-                  className="rounded-lg bg-[#25623f] text-white text-sm font-semibold px-4 py-2 shrink-0"
-                >
-                  Escribir
-                </button>
               </div>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
+      )}
 
       <HojaWhatsApp datos={hoja} onClose={() => setHoja(null)} />
     </div>

@@ -15,6 +15,7 @@ export default function Login() {
     setCargando(true)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) setError("Correo o contraseña incorrectos")
+
     setCargando(false)
   }
 

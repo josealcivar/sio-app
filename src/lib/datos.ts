@@ -101,4 +101,8 @@ export function fechaHoyTexto(): string {
   })
 }
 
-// 593996649325
+ export function fechaMananaTexto(): string {
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  return d.toLocaleDateString("es-EC", { weekday: "long", day: "numeric", month: "long" })
+}

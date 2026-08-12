@@ -1,30 +1,62 @@
-import { useState } from "react"
-import { citasHoy as citasIniciales, clientes, generarFranjas, hoyISO, type Cita } from "@/lib/datos"
+import { useState, useEffect } from "react"
+import { generarFranjas, hoyISO, type Cliente } from "@/lib/datos"
+import { obtenerClientes, obtenerCitasPorFecha, crearCita } from "@/lib/api"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
+type CitaVista = {
+  id: string
+  nombre: string
+  hora: string
+}
+
 export default function Agenda() {
-  const [citas, setCitas] = useState<Cita[]>(citasIniciales)
   const [fecha, setFecha] = useState(hoyISO())
+  const [citasDelDia, setCitasDelDia] = useState<CitaVista[]>([])
+  const [clientes, setClientes] = useState<Cliente[]>([])
   const [franjaElegida, setFranjaElegida] = useState<string | null>(null)
   const [clienteId, setClienteId] = useState("")
+  const [cargando, setCargando] = useState(true)
+  const [guardando, setGuardando] = useState(false)
 
   const franjas = generarFranjas(9, 18, 30)
-
-  // solo las citas de la fecha elegida
-  const citasDelDia = citas.filter((c) => c.fecha === fecha)
   const ocupadas = new Map(citasDelDia.map((c) => [c.hora, c]))
 
-  function agendar() {
+  // carga los clientes una vez
+  useEffect(() => {
+    obtenerClientes().then(setClientes).catch(console.error)
+  }, [])
+
+  // carga las citas cada vez que cambia la fecha
+  useEffect(() => {
+    setCargando(true)
+    obtenerCitasPorFecha(fecha)
+      .then((citas) => setCitasDelDia(citas.map((c:any) => ({ id: c.id, nombre: c.nombre, hora: c.hora }))))
+      .catch(console.error)
+      .finally(() => setCargando(false))
+  }, [fecha])
+
+  async function agendar() {
     if (!franjaElegida || !clienteId) return
-    const cliente = clientes.find((c) => c.id === clienteId)
-    if (!cliente) return
-    setCitas([
-      ...citas,
-      { id: crypto.randomUUID(), nombre: cliente.nombre, fecha, hora: franjaElegida, servicio: "Limpieza facial" },
-    ])
-    setFranjaElegida(null)
-    setClienteId("")
+    setGuardando(true)
+    try {
+      await crearCita({
+        clienteId,
+        fecha,
+        hora: franjaElegida,
+        servicio: "Limpieza facial",
+      })
+      // recarga las citas de la fecha para que aparezca la nueva
+      const citas = await obtenerCitasPorFecha(fecha)
+      setCitasDelDia(citas.map((c:any) => ({ id: c.id, nombre: c.nombre, hora: c.hora })))
+      setFranjaElegida(null)
+      setClienteId("")
+    } catch (e) {
+      console.error("Error agendando:", e)
+      alert("No se pudo agendar la cita")
+    } finally {
+      setGuardando(false)
+    }
   }
 
   return (
@@ -48,37 +80,41 @@ export default function Agenda() {
 
       <p className="text-sm text-muted-foreground mb-3">Toca un horario libre</p>
 
- <div className="space-y-1.5">
-        {franjas.map((hora) => {
-          const cita = ocupadas.get(hora)
-          const libre = !cita
-          return (
-            <button
-              key={hora}
-              disabled={!libre}
-              onClick={() => setFranjaElegida(hora)}
-              className={`w-full flex items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors ${
-                libre
-                  ? "bg-card border border-dashed hover:border-primary hover:border-solid active:bg-secondary"
-                  : "bg-secondary"
-              }`}
-            >
-              <span
-                className={`font-serif text-base font-semibold w-14 shrink-0 ${
-                  libre ? "text-muted-foreground" : "text-primary"
+      {cargando ? (
+        <p className="text-center text-muted-foreground py-8">Cargando…</p>
+      ) : (
+        <div className="space-y-1.5">
+          {franjas.map((hora) => {
+            const cita = ocupadas.get(hora)
+            const libre = !cita
+            return (
+              <button
+                key={hora}
+                disabled={!libre}
+                onClick={() => setFranjaElegida(hora)}
+                className={`w-full flex items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors ${
+                  libre
+                    ? "bg-card border border-dashed hover:border-primary hover:border-solid active:bg-secondary"
+                    : "bg-secondary"
                 }`}
               >
-                {hora}
-              </span>
-              {libre ? (
-                <span className="text-sm text-muted-foreground">Libre</span>
-              ) : (
-                <span className="text-base font-semibold">{cita!.nombre}</span>
-              )}
-            </button>
-          )
-        })}
-      </div>
+                <span
+                  className={`font-serif text-base font-semibold w-14 shrink-0 ${
+                    libre ? "text-muted-foreground" : "text-primary"
+                  }`}
+                >
+                  {hora}
+                </span>
+                {libre ? (
+                  <span className="text-sm text-muted-foreground">Libre</span>
+                ) : (
+                  <span className="text-base font-semibold">{cita!.nombre}</span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+      )}
 
       {franjaElegida && (
         <div
@@ -113,8 +149,8 @@ export default function Agenda() {
               <Button variant="outline" className="flex-1" onClick={() => setFranjaElegida(null)}>
                 Cancelar
               </Button>
-              <Button className="flex-1" onClick={agendar} disabled={!clienteId}>
-                Agendar
+              <Button className="flex-1" onClick={agendar} disabled={!clienteId || guardando}>
+                {guardando ? "Agendando…" : "Agendar"}
               </Button>
             </div>
           </Card>

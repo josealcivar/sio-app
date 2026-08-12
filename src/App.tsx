@@ -11,7 +11,7 @@ import Clientes from "@/pages/Clientes"
 import Cabecera from "./components/Cabecera"
 import Agenda from "@/pages/Agenda"
 // ⚠️ MODO PRUEBA: entra sin Supabase. Poner en false cuando conectes la auth real.
-const MODO_PRUEBA = true
+const MODO_PRUEBA = false
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null)
