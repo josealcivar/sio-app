@@ -119,7 +119,7 @@ export default function DetalleCliente({ cliente, onClose, onGuardar }: Props) {
         ) : (
 <div className="flex gap-2 mt-2" style={{ touchAction: "manipulation" }}>
             <a
-              href={linkWhatsApp(cliente.telefono, `Hola ${cliente.nombre} 💆`)}
+              href={linkWhatsApp(cliente.telefono, `Hola ${cliente.nombre} 🙂`)}
               target="_blank"
               rel="noopener"
               onClick={(e) => e.stopPropagation()}
