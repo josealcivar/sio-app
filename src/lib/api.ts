@@ -1,6 +1,7 @@
 import { supabase } from "./supabase"
 import type { Cliente } from "./datos"
 import { fechaLocalISO } from "./datos"
+import { normalizarTelefono } from "./telefono"
 
 // Trae todos los clientes del usuario logueado
 export async function obtenerClientes(): Promise<Cliente[]> {
@@ -36,11 +37,12 @@ export async function crearCliente(datos: {
   nombre: string
   telefono: string
 }): Promise<Cliente> {
+  const telefonoNormalizado = normalizarTelefono(datos.telefono)
   const { data, error } = await supabase
     .from("clientes")
     .insert({
       nombre: datos.nombre,
-      telefono: datos.telefono,
+      telefono: telefonoNormalizado,
       cadencia_semanas: 5,
     })
     .select()
