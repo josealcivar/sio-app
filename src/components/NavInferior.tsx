@@ -25,8 +25,18 @@ export default function NavInferior() {
             }`
           }
         >
-          <Icon size={22} />
-          {label}
+         {({ isActive }) => (
+            <>
+              <div
+                className={`px-4 py-1 rounded-full transition-colors ${
+                  isActive ? "bg-secondary" : ""
+                }`}
+              >
+                <Icon size={22} />
+              </div>
+              {label}
+            </>
+          )}
         </NavLink>
       ))}
     </nav>
