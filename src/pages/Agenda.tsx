@@ -4,6 +4,9 @@ import { obtenerClientes, obtenerCitasPorFecha, crearCita } from "@/lib/api"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
+import { mensajeConfirmacion } from "@/lib/mensajes"
+import HojaWhatsApp, { type DatosHoja } from "@/components/HojaWhatsApp"
+
 type CitaVista = {
   id: string
   nombre: string
@@ -18,6 +21,7 @@ export default function Agenda() {
   const [clienteId, setClienteId] = useState("")
   const [cargando, setCargando] = useState(true)
   const [guardando, setGuardando] = useState(false)
+  const [hoja, setHoja] = useState<DatosHoja | null>(null)
 
   const franjas = generarFranjas(8, 20, 30)
   const ocupadas = new Map(citasDelDia.map((c) => [c.hora, c]))
@@ -36,7 +40,31 @@ export default function Agenda() {
       .finally(() => setCargando(false))
   }, [fecha])
 
-  async function agendar() {
+  // async function agendar() {
+  //   if (!franjaElegida || !clienteId) return
+  //   setGuardando(true)
+  //   try {
+  //     await crearCita({
+  //       clienteId,
+  //       fecha,
+  //       hora: franjaElegida,
+  //       servicio: "Limpieza facial",
+  //     })
+  //     // recarga las citas de la fecha para que aparezca la nueva
+  //     const citas = await obtenerCitasPorFecha(fecha)
+  //     setCitasDelDia(citas.map((c:any) => ({ id: c.id, nombre: c.nombre, hora: c.hora })))
+  //     setFranjaElegida(null)
+  //     setClienteId("")
+  //   } catch (e) {
+  //     console.error("Error agendando:", e)
+  //     alert("No se pudo agendar la cita")
+  //   } finally {
+  //     setGuardando(false)
+  //   }
+  // }
+
+
+    async function agendar() {
     if (!franjaElegida || !clienteId) return
     setGuardando(true)
     try {
@@ -46,9 +74,21 @@ export default function Agenda() {
         hora: franjaElegida,
         servicio: "Limpieza facial",
       })
-      // recarga las citas de la fecha para que aparezca la nueva
+      // recarga las citas del día
       const citas = await obtenerCitasPorFecha(fecha)
       setCitasDelDia(citas.map((c:any) => ({ id: c.id, nombre: c.nombre, hora: c.hora })))
+
+      // abre la hoja de WhatsApp para confirmarle al cliente
+      const cliente = clientes.find((c) => c.id === clienteId)
+      if (cliente) {
+        setHoja({
+          titulo: "Confirmar cita",
+          nombre: cliente.nombre,
+          telefono: cliente.telefono,
+          mensaje: mensajeConfirmacion(cliente.nombre, franjaElegida, fecha),
+        })
+      }
+
       setFranjaElegida(null)
       setClienteId("")
     } catch (e) {
@@ -161,6 +201,9 @@ export default function Agenda() {
           </Card>
         </div>
       )}
+
+            <HojaWhatsApp datos={hoja} onClose={() => setHoja(null)} />
+              
     </div>
   )
 }
