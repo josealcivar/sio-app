@@ -19,7 +19,7 @@ export default function Agenda() {
   const [cargando, setCargando] = useState(true)
   const [guardando, setGuardando] = useState(false)
 
-  const franjas = generarFranjas(9, 18, 30)
+  const franjas = generarFranjas(8, 20, 30)
   const ocupadas = new Map(citasDelDia.map((c) => [c.hora, c]))
 
   // carga los clientes una vez

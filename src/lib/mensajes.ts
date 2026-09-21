@@ -4,8 +4,18 @@ export function mensajeReactivar(nombre: string, semanas: number): string {
 }
 
 
-export function mensajeRecordatorio(nombre: string, hora: string): string {
-  return `Hola ${nombre} 😊 Te recuerdo tu cita de mañana a las ${hora} ` +
+// export function mensajeRecordatorio(nombre: string, hora: string): string {
+//   return `Hola ${nombre} 😊 Te recuerdo tu cita de mañana a las ${hora} ` +
+//     `para tu limpieza facial. ¿Me confirmas?`
+// }
+
+export function mensajeRecordatorio(nombre: string, hora: string, fecha: string): string {
+  const dia = new Date(fecha + "T00:00:00").toLocaleDateString("es-EC", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  })
+  return `Hola ${nombre} 😊 Te recuerdo tu cita el ${dia} a las ${hora} ` +
     `para tu limpieza facial. ¿Me confirmas?`
 }
 

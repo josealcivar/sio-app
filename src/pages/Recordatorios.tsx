@@ -81,7 +81,7 @@ export default function Recordatorios() {
                     titulo: "Recordatorio de cita",
                     nombre: cita.nombre,
                     telefono: cita.telefono,
-                    mensaje: mensajeRecordatorio(cita.nombre, cita.hora),
+                    mensaje: mensajeRecordatorio(cita.nombre, cita.hora, fecha),
                   })
                 }
                 className="rounded-lg bg-[#25623f] text-white text-sm font-semibold px-3 py-2 shrink-0"
