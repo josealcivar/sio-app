@@ -51,5 +51,5 @@ export function mensajeConfirmacion(nombre: string, hora: string, fecha: string)
     day: "numeric",
     month: "long",
   })
-  return `¡Listo ${nombre}! 😊 Acabo de agendarte para tu limpieza facial el *${dia} a las ${hora}.* ¡Te espero!`
+  return `¡Listo ${nombre}! 😊 Acabo de agendarte para tu sesión facial el *${dia}* a las *${hora}.* ¡Te espero!`
 }
