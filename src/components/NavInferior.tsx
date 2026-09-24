@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { Calendar, Moon, Bell, Users, ChartColumnIncreasingIcon } from "lucide-react"
+import { Calendar, Bell, Users, ChartColumnIncreasingIcon } from "lucide-react"
 
 const tabs = [
   { to: "/", label: "Hoy", Icon: Calendar, end: true },
