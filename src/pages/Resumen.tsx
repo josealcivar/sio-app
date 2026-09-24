@@ -266,7 +266,7 @@ export default function Resumen() {
         </div>
         <p className="text-sm text-primary/80 mt-1.5 leading-relaxed">
           {recup === 0 ? (
-            "Ninguna clienta dormida volvió en este periodo."
+            "Ninguna clienta de reactivación volvió en este periodo."
           ) : (
             <>
               Se habían pasado de su ciclo y regresaron. Equivale a{" "}

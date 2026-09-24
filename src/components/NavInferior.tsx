@@ -1,13 +1,15 @@
 import { NavLink } from "react-router-dom"
-import { Calendar, Moon, Bell, Users, ChartScatterIcon } from "lucide-react"
+import { Calendar, Moon, Bell, Users, ChartColumnIncreasingIcon } from "lucide-react"
 
 const tabs = [
   { to: "/", label: "Hoy", Icon: Calendar, end: true },
-  { to: "/reactivar", label: "Reactivar", Icon: Moon },
-  // { to: "/agenda", label: "Agendar", Icon: Calendar },
+  // { to: "/reactivar", label: "Reactivar", Icon: Moon },
+  
   { to: "/recordatorios", label: "Recordatorios", Icon: Bell },
+  { to: "/agenda", label: "Agendar", Icon: Calendar },
+  
   { to: "/clientes", label: "Clientes", Icon: Users },
-  { to: "/resumen", label: "Resumen", Icon: ChartScatterIcon   },
+  { to: "/resumen", label: "Resumen", Icon: ChartColumnIncreasingIcon   },
 ]
 
 export default function NavInferior() {
