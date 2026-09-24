@@ -283,9 +283,13 @@ export default function Resumen() {
           <p className="text-2xl font-bold tracking-tight">{nuevas}</p>
           <p className="text-xs text-muted-foreground mt-0.5">clientas nuevas</p>
         </div>
-        <div className="bg-card border rounded-2xl p-3.5">
+        {/* <div className="bg-card border rounded-2xl p-3.5">
           <p className="text-2xl font-bold tracking-tight">{canc}</p>
           <p className="text-xs text-muted-foreground mt-0.5">citas canceladas</p>
+        </div> */}
+        <div className="bg-card border rounded-2xl p-3.5">
+            <p className="text-2xl font-bold tracking-tight">{suma(datos, "programadas")}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">citas programadas</p>
         </div>
       </div>
 

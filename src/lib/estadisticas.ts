@@ -12,11 +12,12 @@ export const PRECIO_PROMEDIO = 30
 
 export type MesStats = {
   anio: number
-  mes: number // 0 = enero
-  citas: number // atendidas (estado 'vino')
-  recup: number // volvieron después de pasarse de su ciclo
-  nuevas: number // clientas dadas de alta ese mes
-  canc: number // citas canceladas
+  mes: number
+  citas: number
+  recup: number
+  nuevas: number
+  canc: number
+  programadas: number   // ← nuevo
 }
 
 // Convierte "2026-09-21" a {anio, mes, dia} sin que la zona horaria lo corra
@@ -46,7 +47,8 @@ function diasEntre(a: string, b: string) {
 export async function obtenerEstadisticas(): Promise<MesStats[]> {
   const [resCitas, resClientes] = await Promise.all([
     supabase.from("citas").select("fecha, estado, cliente_id"),
-    supabase.from("clientes").select("id, cadencia_semanas, created_at"),
+    supabase.from("clientes").select("id, cadencia_semanas, created_at").eq("activo", true),
+    
   ])
 
   if (resCitas.error) throw resCitas.error
@@ -63,7 +65,7 @@ export async function obtenerEstadisticas(): Promise<MesStats[]> {
   const fila = (anio: number, mes: number) => {
     const k = clave(anio, mes)
     if (!mapa.has(k))
-      mapa.set(k, { anio, mes, citas: 0, recup: 0, nuevas: 0, canc: 0 })
+      mapa.set(k, { anio, mes, citas: 0, recup: 0, nuevas: 0, canc: 0, programadas: 0 })
     return mapa.get(k)!
   }
 
@@ -71,6 +73,7 @@ export async function obtenerEstadisticas(): Promise<MesStats[]> {
   citas.forEach((c: any) => {
     if (!c.fecha) return
     const p = partes(c.fecha)
+    fila(p.anio, p.mes).programadas++  
     if (c.estado === "vino") fila(p.anio, p.mes).citas++
     if (c.estado === "cancelada") fila(p.anio, p.mes).canc++
   })
