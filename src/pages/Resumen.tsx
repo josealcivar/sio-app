@@ -140,7 +140,7 @@ export default function Resumen() {
   const citas = suma(datos, "citas")
   const recup = suma(datos, "recup")
   const nuevas = suma(datos, "nuevas")
-  const canc = suma(datos, "canc")
+  
 
   const dif = prev ? citas - suma(prev, "citas") : null
 
