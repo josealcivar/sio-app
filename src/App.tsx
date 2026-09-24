@@ -10,6 +10,7 @@ import Recordatorios from "@/pages/Recordatorios"
 import Clientes from "@/pages/Clientes"
 import Cabecera from "./components/Cabecera"
 import Agenda from "@/pages/Agenda"
+import Resumen from "./pages/Resumen"
 // ⚠️ MODO PRUEBA: entra sin Supabase. Poner en false cuando conectes la auth real.
 const MODO_PRUEBA = false
 
@@ -51,6 +52,7 @@ export default function App() {
           <Route path="/agenda" element={<Agenda />} />
           <Route path="/recordatorios" element={<Recordatorios />} />
           <Route path="/clientes" element={<Clientes />} />
+          <Route path="/resumen" element={<Resumen />} />
         </Routes>
       </div>
       <NavInferior />
